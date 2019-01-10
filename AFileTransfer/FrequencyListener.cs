@@ -20,6 +20,9 @@ namespace AFileTransfer
         Timer timer1;
         DateTime lastSpacer = DateTime.MaxValue;
         bool FileEnded = false;
+
+        int counter = 1001;
+
         public BufferedWaveProvider bwp;
 
         public bool ReadByte = false;
@@ -154,34 +157,39 @@ namespace AFileTransfer
             var temp = Ys2.Take(Ys2.Length / 2).ToArray();
             //Console.WriteLine($"{DateTime.Now} {temp[406]}");
             //464
-            var topSens = 5;
+            if (!FileEnded && temp[511] > 100)
+            {
+                ConvertOutputToFile(@"Q:\ToDeleteEveryDay\TempFile.txt");
+                FileEnded = true;
+            }
+
+
+            var topSens = 250;
             if (!ReadByte && !FileEnded)
             {
                 if (temp[463] > topSens)
                 {
                     output += "1";
+                    ReadByte = true;
                 }
                 else if (temp[406] > topSens)
                 {
                     output += "0";
+                    ReadByte = true;
                 }
-                ReadByte = true;
-                lastSpacer = DateTime.MaxValue;
             }
-            else if (!FileEnded)
+            else
             {
                 if ((temp[488] > topSens))
                 {
                     ReadByte = false;
-                    if (lastSpacer == DateTime.MaxValue)
+                    counter = 1000;
+                } else
+                {
+                    counter--;
+                    if (counter < 0)
                     {
-                        lastSpacer = DateTime.Now;
-                    } else
-                    {
-                        if ((DateTime.Now - lastSpacer).TotalSeconds > 3)
-                        {
-                            FileEnded = true;
-                        }
+                        ConvertOutputToFile("TempFile.txt");
                     }
                 }
             }

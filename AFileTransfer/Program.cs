@@ -11,14 +11,14 @@ namespace AFileTransfer
         static void Main(string[] args)
         {
             var ourPlayer = new FrequencyPlayer(1.0, 1.1);
-            var ourListener = new FrequencyListener(1, 1, 2);
+            var ourListener = new FrequencyListener(1, 1, 0);
             var rng = new Random();
             var weAreCorrect = true;
             
             var file = @"Q:\Toolz\Csharp-Data-Visualization\projects\17-07-16_microphone\Test.txt";
             // ourPlayer.StartTone();
             var playingString = ourPlayer.GetFileString(file);
-            //playingString = "0101";
+            //playingString = "01";
             while (weAreCorrect)
             {
                // playingString += rng.NextDouble() > .5 ? "0" : "1";

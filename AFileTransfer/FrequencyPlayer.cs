@@ -16,8 +16,8 @@ namespace AFileTransfer
         double level;
         double frequency;
 
-        int NoteTime = 100;
-        int SpacerTime = 150;
+        int NoteTime = 200;
+        int SpacerTime = 300;
 
 
         public DateTime StartTime = DateTime.MinValue;
@@ -60,6 +60,7 @@ namespace AFileTransfer
 
             using (var wo = new WaveOutEvent())
             {
+                wo.DeviceNumber = 4;
                 StartTime = DateTime.Now;
                 for (var i = 0; i < tones.Count; i++)
                 {
@@ -170,6 +171,13 @@ namespace AFileTransfer
                 list.Add(note);
                 list.Add(spacerNote);
             }
+            var endNote = new SignalGenerator()
+            {
+                Gain = 1.0,
+                Frequency = 22000,
+                Type = SignalGeneratorType.Sin
+            }.Take(TimeSpan.FromMilliseconds(1000));
+            list.Add(endNote);
             PlayTonesFromList(list);
 
         }
